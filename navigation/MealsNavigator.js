@@ -123,11 +123,28 @@ const MealsFavTabNavigator =
 
       const FiltersNavigator = createStackNavigator({
         Filters: FiltersScreen
+      }, {
+        // to override the default lable name could use navoptions in stackNavigtor or drawerNavigator
+        // navigationOptions: {
+        //   drawerLabel: "Filters!!"
+        // },
+        defaultNavigationOptions: defaultStackNavOptions
       })
 
       const MainNavigator = createDrawerNavigator({
-        MealsFavs: MealsFavTabNavigator,
+        MealsFavs: {screen: MealsFavTabNavigator, navigationOptions:{
+          drawerLabel: "Meals!"
+        }},
         Filters: FiltersNavigator
+      }, {
+        // contentOptions allows us to control the content in the drawer
+        contentOptions: {
+          activeTintColor: Colors.accentColor,
+          labelStyle: {
+            fontFamily: "open-sans-bold"
+          }
+
+        }
       })
 
 // we can use MealsFavTabNavgator because or MealsNavigator we use in the header is nested inside
