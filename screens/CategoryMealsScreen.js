@@ -1,30 +1,11 @@
 import React from 'react'
-import { View, Text, FlatList, StyleSheet, Platform } from 'react-native'
 import { CATEGORIES, MEALS } from '../data/dummy-data'
 import Colors from '../constants/Colors'
-import MealItem from '../components/MealItem'
+import MealList from '../components/MealList'
 
 const CategoryMealsScreen = props => {
 
-    const renderMealItem = itemData => {
-        return(
-            <MealItem 
-            title = {itemData.item.title}
-            image = {itemData.item.imageUrl}
-            onSelectMeal={() => {
-                props.navigation.navigate({
-            routeName: 'MealDetail',
-            params: {
-              mealId: itemData.item.id
-              }
-            })
-         }}
-            duration={itemData.item.duration}
-            complexity={itemData.item.complexity}
-            affordability={itemData.item.affordability}
-            />
-        )
-    }
+    
 
     const catId = props.navigation.getParam('categoryId');
 
@@ -36,16 +17,12 @@ const CategoryMealsScreen = props => {
   
 
     return(
-        <View style={styles.screen}>
-            <Text>The Categories Meal Screen</Text>
-            <FlatList
-                data={displayedMeals}
-                keyExtractor={(item, index) => item.id}
-                renderItem={renderMealItem}
-                style={{width: "90%"}}
-            
-            />
-        </View>
+       <MealList 
+       listData={displayedMeals}
+    //    navigation only works from the component that is loading it.
+    // to allow our MealList component to use info from navigation we can pass it as a prop
+       navigation={props.navigation}
+       />
         
     )
 }
@@ -65,12 +42,6 @@ CategoryMealsScreen.navigationOptions = (navigationData) => {
     }
 }
 
-const styles = StyleSheet.create({
-    screen: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center"
-    }
-})
+
 
 export default CategoryMealsScreen
