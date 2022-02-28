@@ -7,35 +7,42 @@ import CategoriesScreen from "../screens/CategoriesScreen";
 import CategoryMealsScreen from "../screens/CategoryMealsScreen";
 import MealDetailScreen from "../screens/MealDetailScreen";
 import FavoritesScreen from "../screens/FavoritesScreen";
-import FiltersScreen from "../screens/FiltersScreen"
-import { Platform } from "react-native";
+import FiltersScreen from "../screens/FiltersScreen";
+import { Platform, Text } from "react-native";
 import Colors from "../constants/Colors";
 import { Ionicons } from "@expo/vector-icons";
 // createMaterialBottomTabNavigator allows use to customize that bottom tabs in a better style for android
 import { createMaterialBottomTabNavigator } from "react-navigation-material-bottom-tabs";
 
-const defaultStackNavOptions =  
+const defaultStackNavOptions =
+  // pages slide from the bottom instead of deafault popping, only for IOS
+  // mode: "modal",
 
-// pages slide from the bottom instead of deafault popping, only for IOS
-// mode: "modal",
+  //  can use initialRouteName to set the initial route. "Categories" is our default
+  //  initialRouteName: "Categories"
 
-//  can use initialRouteName to set the initial route. "Categories" is our default
-//  initialRouteName: "Categories"
-
-// allow us to set up options that apply to every screen in the navigator
-// now we don't have to repeat the code in every screen
-// defaultNavOpts get merged with the specific navOptions in a components
-// the sepecif navOptions will always override the defaultNavOption is the same name, or key, is found in both
-{defaultNavigationOptions: {
-  headerStyle: {
-    backgroundColor:
-      Platform.OS === "android" ? Colors.primaryColor : "white",
-  },
-  // styles title headerTint
-  headerTintColor:
-    Platform.OS === "android" ? "white" : Colors.primaryColor,
-},
-}
+  // allow us to set up options that apply to every screen in the navigator
+  // now we don't have to repeat the code in every screen
+  // defaultNavOpts get merged with the specific navOptions in a components
+  // the sepecif navOptions will always override the defaultNavOption is the same name, or key, is found in both
+  {
+    defaultNavigationOptions: {
+      headerStyle: {
+        backgroundColor:
+          Platform.OS === "android" ? Colors.primaryColor : "white",
+      },
+      // changes the text in the header
+      headerTitleStyle: {
+        fontFamily: "open-sans-bold",
+      },
+      headerBackTitleStyle: {
+        fontFamily: "open-sans",
+      },
+      // styles title headerTint
+      headerTintColor:
+        Platform.OS === "android" ? "white" : Colors.primaryColor,
+    },
+  };
 
 // first argument is your screen object and the second argument configures the navigator
 const MealsNavigator = createStackNavigator(
@@ -50,17 +57,19 @@ const MealsNavigator = createStackNavigator(
     MealDetail: MealDetailScreen,
   },
   {
-    defaultNavigationOptions: defaultStackNavOptions
+    defaultNavigationOptions: defaultStackNavOptions,
   }
-   
 );
 
- const FavNavigator = createStackNavigator({
-  Favorties: FavoritesScreen,
-  MealDetail: MealDetailScreen
-}, {
-  defaultNavigationOptions: defaultStackNavOptions
-})
+const FavNavigator = createStackNavigator(
+  {
+    Favorties: FavoritesScreen,
+    MealDetail: MealDetailScreen,
+  },
+  {
+    defaultNavigationOptions: defaultStackNavOptions,
+  }
+);
 
 const tabScreenConfig = {
   // our first tab is rendering the navigation stack of screens
@@ -70,15 +79,14 @@ const tabScreenConfig = {
       // tabBarIcon is a function that gets passed an argument automatically by react native
       tabBarIcon: (tabInfo) => {
         return (
-          <Ionicons
-            name="ios-restaurant"
-            size={25}
-            color={tabInfo.tintColor}
-          />
+          <Ionicons name="ios-restaurant" size={25} color={tabInfo.tintColor} />
         );
       },
       // only works if shifting: true
-      tabBarColor: Colors.primaryColor
+      tabBarColor: Colors.primaryColor,
+      // use Text component inside tabBarLabel because MaterialBottomTabNav doesn't support labelStyle like ios bottomTabNav
+      // using Platform api to check if it's android becuase we dont want to override the tint and default features in BottomTabNav
+      tabBarLabel: Platform.OS === "android" ? <Text style={{fontFamily: "open-sans-bold"}}>Meals</Text> : "Meals"
     },
   },
   Favorites: {
@@ -87,65 +95,73 @@ const tabScreenConfig = {
       tabBarLabel: "Favorites!",
 
       tabBarIcon: (tabInfo) => {
-        return (
-          <Ionicons
-            name="ios-star"
-            size={25}
-            color={tabInfo.tintColor}
-          />
-        );
+        return <Ionicons name="ios-star" size={25} color={tabInfo.tintColor} />;
       },
-      tabBarColor: Colors.accentColor
+      tabBarColor: Colors.accentColor,
+      tabBarLabel: Platform.OS === "android" ? <Text style={{fontFamily: "open-sans-bold"}}>Favorites</Text> : "Favorites"
     },
+
   },
-}
+};
 
 const MealsFavTabNavigator =
   Platform.OS === "android"
     ? createMaterialBottomTabNavigator(tabScreenConfig, {
-      activeColor: "white",
-      // shifting gives a nice ripple effect when clicking tab buttons
-      shifting: true,
-      // we can use barStyle to to set the tab color if we don't want to use shifting: true. 
-      // barStyle: {
-      //   backgroundColor: Colors.primaryColor
-      // }
-    })
-    : createBottomTabNavigator( tabScreenConfig,
-        
+        activeColor: "white",
+        // shifting gives a nice ripple effect when clicking tab buttons
+        shifting: true,
+        // we can use barStyle to to set the tab color if we don't want to use shifting: true.
+        // barStyle: {
+        //   backgroundColor: Colors.primaryColor
+        // }
+      })
+    : createBottomTabNavigator(
+        tabScreenConfig,
+
         {
           // tabBarOptions allows us to control how tab is styled.
           tabBarOptions: {
+            labelStyle: {
+              fontFamily: "open-sans-bold"
+            },
             activeTintColor: Colors.accentColor,
           },
         }
       );
 
-      const FiltersNavigator = createStackNavigator({
-        Filters: FiltersScreen
-      }, {
-        // to override the default lable name could use navoptions in stackNavigtor or drawerNavigator
-        // navigationOptions: {
-        //   drawerLabel: "Filters!!"
-        // },
-        defaultNavigationOptions: defaultStackNavOptions
-      })
+const FiltersNavigator = createStackNavigator(
+  {
+    Filters: FiltersScreen,
+  },
+  {
+    // to override the default lable name could use navoptions in stackNavigtor or drawerNavigator
+    // navigationOptions: {
+    //   drawerLabel: "Filters!!"
+    // },
+    defaultNavigationOptions: defaultStackNavOptions,
+  }
+);
 
-      const MainNavigator = createDrawerNavigator({
-        MealsFavs: {screen: MealsFavTabNavigator, navigationOptions:{
-          drawerLabel: "Meals!"
-        }},
-        Filters: FiltersNavigator
-      }, {
-        // contentOptions allows us to control the content in the drawer
-        contentOptions: {
-          activeTintColor: Colors.accentColor,
-          labelStyle: {
-            fontFamily: "open-sans-bold"
-          }
-
-        }
-      })
+const MainNavigator = createDrawerNavigator(
+  {
+    MealsFavs: {
+      screen: MealsFavTabNavigator,
+      navigationOptions: {
+        drawerLabel: "Meals!",
+      },
+    },
+    Filters: FiltersNavigator,
+  },
+  {
+    // contentOptions allows us to control the content in the drawer
+    contentOptions: {
+      activeTintColor: Colors.accentColor,
+      labelStyle: {
+        fontFamily: "open-sans-bold",
+      },
+    },
+  }
+);
 
 // we can use MealsFavTabNavgator because or MealsNavigator we use in the header is nested inside
 export default createAppContainer(MainNavigator);
