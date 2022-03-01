@@ -1,17 +1,17 @@
-import React from "react";
+import React, {useEffect, useCallback} from "react";
 import {
   View,
   ScrollView,
   Image,
   Text,
-  Button,
   StyleSheet,
 } from "react-native";
-import { MEALS } from "../data/dummy-data";
+import { useSelector, useDispatch } from "react-redux";
 // We add this headerbuttons and Items(self closing componet) to create header button
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../components/HeaderButton";
 import DefaultText from "../components/DefaultText";
+import { toggleFavorite } from "../store/actions/meals";
 
 const ListItem = props => {
   return(
@@ -22,9 +22,27 @@ const ListItem = props => {
 }
 
 const MealDetailScreen = (props) => {
+
+  const availableMeals = useSelector(state => state.meals.meals)
+
   const mealId = props.navigation.getParam("mealId");
 
-  const selectedMeal = MEALS.find((meal) => meal.id === mealId);
+  const selectedMeal =  availableMeals.find((meal) => meal.id === mealId);
+
+  const dispatch = useDispatch()
+
+  const toggleFavoriteHandler = useCallback(() => {
+    dispatch(toggleFavorite(mealId))
+  }, [dispatch, mealId])
+
+
+  // useEffect might not be best option becuase the title takes a little time to load
+  // the title is not on detail screen for brief moment. doesn't look good
+  useEffect(()=> {
+    // props.navigation.setParams({mealTitle: selectedMeal.title})
+    props.navigation.setParams({toggleFav: toggleFavoriteHandler})
+  }, [selectedMeal])
+
 
   return (
     <ScrollView>
@@ -43,20 +61,22 @@ const MealDetailScreen = (props) => {
 };
 
 MealDetailScreen.navigationOptions = (navigationData) => {
-  const mealId = navigationData.navigation.getParam("mealId");
-  const selectedMeal = MEALS.find((meal) => meal.id === mealId);
+
+  // const mealId = navigationData.navigation.getParam("mealId");
+  const mealTitle = navigationData.navigation.getParam("mealTitle")
+  const toggleFavorite = navigationData.navigation.getParam('toggleFav')
+  // const selectedMeal = MEALS.find((meal) => meal.id === mealId);
+
 
   return {
-    headerTitle: selectedMeal.title,
+    headerTitle: mealTitle,
     headerRight: (
       // the HeaderButtons component expects a prop that points to the components that we use to render the item in the end
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
           title="Favorite"
           iconName="ios-star"
-          onPress={() => {
-            console.log("Favorited");
-          }}
+          onPress={toggleFavorite}
         />
       </HeaderButtons>
     ),

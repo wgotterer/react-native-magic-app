@@ -49,6 +49,8 @@ const FiltersScreen = (props) => {
     // setParams updates the params values of the currently loaded screen
 
     navigation.setParams({ save: saveFilters });
+    // The effect calls innerFunction, hence it should declare it as a dependency
+    // Otherwise, if something about innerFunction changes (e.g. the data it uses), the effect would run the outdated version of innerFunction
   }, [saveFilters]);
 
   return (

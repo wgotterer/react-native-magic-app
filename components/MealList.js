@@ -72,7 +72,10 @@ const MealList = props => {
           props.navigation.navigate({
             routeName: 'MealDetail',
             params: {
-              mealId: itemData.item.id
+              mealId: itemData.item.id,
+            //   we are setting the title in the component that is rendered before the mealDetailScreen
+            // this way the title header is loaded before the click and we immediatly see the title
+              mealTitle: itemData.item.title
             }
           });
         }}
