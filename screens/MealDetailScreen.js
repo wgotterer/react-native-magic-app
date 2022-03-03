@@ -55,7 +55,7 @@ const MealDetailScreen = (props) => {
     <ScrollView>
       <Image source={{uri: selectedMeal.imageUrl}} style={styles.image} />
       <View style={styles.details}>
-        <DefaultText>{selectedMeal.duration}m</DefaultText>
+        <DefaultText>{selectedMeal.duration.toUpperCase()}</DefaultText>
         <DefaultText>{selectedMeal.complexity.toUpperCase()}</DefaultText>
         <DefaultText>{selectedMeal.affordability.toUpperCase()}</DefaultText>
       </View>
@@ -94,7 +94,7 @@ MealDetailScreen.navigationOptions = (navigationData) => {
 const styles = StyleSheet.create({
   image:{
     width: "100%",
-    height: 200
+    height: 600
 
   },
   details: {
