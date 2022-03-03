@@ -3,6 +3,8 @@ import { View, Text, StyleSheet, Switch, Platform } from "react-native";
 import Colors from "../constants/Colors";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../components/HeaderButton";
+import { useDispatch } from "react-redux";
+import { setFilters } from "../store/actions/meals";
 
 const FilterSwtich = (props) => {
   return (
@@ -31,6 +33,7 @@ const FiltersScreen = (props) => {
   const [isVegetarian, setIsVegetarian] = useState(false);
   const [isVegan, setIsVegan] = useState(false);
 
+  const dispatch = useDispatch()
   // we use useCallback because this info is now cached by react and only updated if its dependencies change
   //
   const saveFilters = useCallback(() => {
@@ -38,12 +41,12 @@ const FiltersScreen = (props) => {
       glutenFree: isGlutenFree,
       lactoseFree: isLactoseFree,
       vegan: isVegan,
-      isVegetarian: isVegetarian,
+      vegetarian: isVegetarian,
     };
-    console.log(appliedFilters);
+    dispatch(setFilters(appliedFilters))
     // we will re create this function only if one of these dependencies is updated
     // this is import becuase saveFilters is a dependency in useEffect and we want to keep the rerendering to a minimum
-  }, [isGlutenFree, isLactoseFree, isVegan, isVegetarian]);
+  }, [isGlutenFree, isLactoseFree, isVegan, isVegetarian, dispatch]);
 
   useEffect(() => {
     // setParams updates the params values of the currently loaded screen

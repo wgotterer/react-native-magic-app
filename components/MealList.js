@@ -56,11 +56,21 @@
 
 import React from 'react';
 import { View, FlatList, StyleSheet } from 'react-native';
+import { useSelector } from 'react-redux';
+import mealsReducer from '../store/reducers/meals';
 
 import MealItem from './MealItem';
 
 const MealList = props => {
+
+    // reminder! can only use useSelector in the route component. Can't in nested(renderMealItem)
+    // doing this so the star is already filled when go to the detail screen and isn't empty for a second
+    const favoriteMeals = useSelector(state => state.meals.favoriteMeals)
+
+
   const renderMealItem = itemData => {
+      const isFavorite = favoriteMeals.some(meal => meal.id === itemData.item.id)
+      
     return (
       <MealItem
         title={itemData.item.title}
@@ -75,7 +85,8 @@ const MealList = props => {
               mealId: itemData.item.id,
             //   we are setting the title in the component that is rendered before the mealDetailScreen
             // this way the title header is loaded before the click and we immediatly see the title
-              mealTitle: itemData.item.title
+              mealTitle: itemData.item.title,
+              isFav: isFavorite
             }
           });
         }}
