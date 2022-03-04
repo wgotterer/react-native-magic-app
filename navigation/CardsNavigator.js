@@ -4,8 +4,8 @@ import { createBottomTabNavigator } from "react-navigation-tabs";
 import { createStackNavigator } from "react-navigation-stack";
 import { createDrawerNavigator } from "react-navigation-drawer";
 import CategoriesScreen from "../screens/CategoriesScreen";
-import CategoryMealsScreen from "../screens/CategoryMealsScreen";
-import MealDetailScreen from "../screens/MealDetailScreen";
+import CategoryCardsScreen from "../screens/CategoryCardsScreen";
+import CardDetailScreen from "../screens/CardDetailScreen";
 import FavoritesScreen from "../screens/FavoritesScreen";
 import FiltersScreen from "../screens/FiltersScreen";
 import { Platform, Text } from "react-native";
@@ -45,16 +45,16 @@ const defaultStackNavOptions =
   };
 
 // first argument is your screen object and the second argument configures the navigator
-const MealsNavigator = createStackNavigator(
+const CardsNavigator = createStackNavigator(
   {
     Categories: {
       screen: CategoriesScreen,
     },
 
-    CategoryMeals: {
-      screen: CategoryMealsScreen,
+    CategoryCards: {
+      screen: CategoryCardsScreen,
     },
-    MealDetail: MealDetailScreen,
+    CardDetail: CardDetailScreen,
   },
   {
     defaultNavigationOptions: defaultStackNavOptions,
@@ -64,7 +64,7 @@ const MealsNavigator = createStackNavigator(
 const FavNavigator = createStackNavigator(
   {
     Favorties: FavoritesScreen,
-    MealDetail: MealDetailScreen,
+    CardDetail: CardDetailScreen,
   },
   {
     defaultNavigationOptions: defaultStackNavOptions,
@@ -73,20 +73,23 @@ const FavNavigator = createStackNavigator(
 
 const tabScreenConfig = {
   // our first tab is rendering the navigation stack of screens
-  Meals: {
-    screen: MealsNavigator,
+  Cards: {
+    screen: CardsNavigator,
     navigationOptions: {
       // tabBarIcon is a function that gets passed an argument automatically by react native
       tabBarIcon: (tabInfo) => {
-        return (
-          <Ionicons name="ios-restaurant" size={25} color={tabInfo.tintColor} />
-        );
+        return <Ionicons name="folder" size={25} color={tabInfo.tintColor} />;
       },
       // only works if shifting: true
       tabBarColor: Colors.primaryColor,
       // use Text component inside tabBarLabel because MaterialBottomTabNav doesn't support labelStyle like ios bottomTabNav
       // using Platform api to check if it's android becuase we dont want to override the tint and default features in BottomTabNav
-      tabBarLabel: Platform.OS === "android" ? <Text style={{fontFamily: "open-sans-bold"}}>Meals</Text> : "Meals"
+      tabBarLabel:
+        Platform.OS === "android" ? (
+          <Text style={{ fontFamily: "open-sans-bold" }}>Cards</Text>
+        ) : (
+          "Cards"
+        ),
     },
   },
   Favorites: {
@@ -98,13 +101,17 @@ const tabScreenConfig = {
         return <Ionicons name="ios-star" size={25} color={tabInfo.tintColor} />;
       },
       tabBarColor: Colors.accentColor,
-      tabBarLabel: Platform.OS === "android" ? <Text style={{fontFamily: "open-sans-bold"}}>Favorites</Text> : "Favorites"
+      tabBarLabel:
+        Platform.OS === "android" ? (
+          <Text style={{ fontFamily: "open-sans-bold" }}>Favorites</Text>
+        ) : (
+          "Favorites"
+        ),
     },
-
   },
 };
 
-const MealsFavTabNavigator =
+const CardsFavTabNavigator =
   Platform.OS === "android"
     ? createMaterialBottomTabNavigator(tabScreenConfig, {
         activeColor: "white",
@@ -122,7 +129,7 @@ const MealsFavTabNavigator =
           // tabBarOptions allows us to control how tab is styled.
           tabBarOptions: {
             labelStyle: {
-              fontFamily: "open-sans-bold"
+              fontFamily: "open-sans-bold",
             },
             activeTintColor: Colors.accentColor,
           },
@@ -144,10 +151,10 @@ const FiltersNavigator = createStackNavigator(
 
 const MainNavigator = createDrawerNavigator(
   {
-    MealsFavs: {
-      screen: MealsFavTabNavigator,
+    CardsFavs: {
+      screen: CardsFavTabNavigator,
       navigationOptions: {
-        drawerLabel: "Meals!",
+        drawerLabel: "Cards",
       },
     },
     Filters: FiltersNavigator,

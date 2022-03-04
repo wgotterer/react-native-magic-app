@@ -3,10 +3,10 @@ import { StyleSheet, Text, View } from "react-native";
 import * as Font from "expo-font";
 import AppLoading from "expo-app-loading";
 import React, { useState } from "react";
-import MealsNavigator from "./navigation/MealsNavigator";
+import CardsNavigator from "./navigation/CardsNavigator";
 import { enableScreens } from "react-native-screens";
 import { createStore, combineReducers } from "redux";
-import mealsReducer from "./store/reducers/meals";
+import cardsReducer from "./store/reducers/cards";
 import { Provider } from "react-redux";
 
 // behind the scenes this unlocks the screens and makes the performace better and more efficient
@@ -14,7 +14,7 @@ enableScreens();
 
 // creates store and it takes a reducer. we need to merge all single reducers into one using combineReducers
 const rootReducer = combineReducers({
-  meals: mealsReducer,
+  cards: cardsReducer,
 });
 const store = createStore(rootReducer);
 
@@ -41,7 +41,7 @@ function App() {
     // we wrap Provider around the top most components. and had all components that need access to state
     // the store prop allows us to access the store and redux in any component in our app
     <Provider store={store}>
-      <MealsNavigator />
+      <CardsNavigator />
     </Provider>
   );
 }

@@ -1,21 +1,23 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
 import { useSelector } from "react-redux";
-import MealList from "../components/MealList";
+import CardList from "../components/CardList";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../components/HeaderButton";
 import DefaultText from "../components/DefaultText";
 
 const FavoritesScreen = (props) => {
-  // the first meal accesses the reducer in App.js and the second favoriteMeals grabs the slice deined in reducer/meals.js
-  const favMeals = useSelector((state) => state.meals.favoriteMeals);
+  // the first Card accesses the reducer in App.js and the second favoriteCards grabs the slice deined in reducer/Cards.js
+  const favCards = useSelector((state) => state.cards.favoriteCards);
 
-  if(favMeals.length === 0 || !favMeals) {
-      return (<View style={styles.content}>
-          <DefaultText>No favorite meals found. Start adding some!</DefaultText>
-      </View>)
+  if (favCards.length === 0 || !favCards) {
+    return (
+      <View style={styles.content}>
+        <DefaultText>No favorite cards found. Start adding some!</DefaultText>
+      </View>
+    );
   }
-  return <MealList listData={favMeals} navigation={props.navigation} />;
+  return <CardList listData={favCards} navigation={props.navigation} />;
 };
 
 FavoritesScreen.navigationOptions = (navData) => {
@@ -24,8 +26,8 @@ FavoritesScreen.navigationOptions = (navData) => {
     headerLeft: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item
-          title="Menu"
-          iconName="ios-menu"
+          title="Folder"
+          iconName="ios-folder"
           onPress={() => {
             navData.navigation.toggleDrawer();
           }}
@@ -36,12 +38,10 @@ FavoritesScreen.navigationOptions = (navData) => {
 };
 
 const styles = StyleSheet.create({
-    content: {
-        flex: 1,
-        justifyContent: "center",
-        alignItems: "center"
-    }
-
-   
-})
+  content: {
+    flex: 1,
+    justifyContent: "center",
+    alignItems: "center",
+  },
+});
 export default FavoritesScreen;

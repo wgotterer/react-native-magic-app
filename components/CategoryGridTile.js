@@ -1,28 +1,37 @@
-import React from 'react'
-import { View, Text, TouchableOpacity, StyleSheet, TouchableNativeFeedback, Platform } from 'react-native'
-import { ScreenContainer } from 'react-native-screens'
+import React from "react";
+import {
+  View,
+  Text,
+  TouchableOpacity,
+  StyleSheet,
+  TouchableNativeFeedback,
+  Platform,
+} from "react-native";
+import { ScreenContainer } from "react-native-screens";
 
-
-
-const CategoryGridTile = props => {
+const CategoryGridTile = (props) => {
   let TouchableCmp = TouchableOpacity;
 
   // checks to see if it's android and version is compatible to add ripple effect
-  if(Platform.OS === 'android' && Platform.Version >= 21){
-    TouchableCmp = TouchableNativeFeedback
+  if (Platform.OS === "android" && Platform.Version >= 21) {
+    TouchableCmp = TouchableNativeFeedback;
   }
 
-    return(
-      <View style={styles.gridItem}>
-        <TouchableCmp  style={{flex: 1}}  onPress={props.onSelect} >
-        <View style={{...styles.container, ...{backgroundColor: props.color}}}>
+  return (
+    <View style={styles.gridItem}>
+      <TouchableCmp style={{ flex: 1 }} onPress={props.onSelect}>
+        <View
+          style={{ ...styles.container, ...{ backgroundColor: props.color } }}
+        >
           {/*numberOfLines used so that if anything is longer it goes to a new lone  */}
-          <Text style={styles.title} numberOfLines={2} >{props.title} </Text>
+          <Text style={styles.title} numberOfLines={2}>
+            {props.title}{" "}
+          </Text>
         </View>
       </TouchableCmp>
-      </View>
-    )
-}
+    </View>
+  );
+};
 
 const styles = StyleSheet.create({
   gridItem: {
@@ -62,4 +71,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default CategoryGridTile
+export default CategoryGridTile;

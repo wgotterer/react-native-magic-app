@@ -4,7 +4,7 @@ import Colors from "../constants/Colors";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
 import HeaderButton from "../components/HeaderButton";
 import { useDispatch } from "react-redux";
-import { setFilters } from "../store/actions/meals";
+import { setFilters } from "../store/actions/cards";
 
 const FilterSwtich = (props) => {
   return (
@@ -28,25 +28,25 @@ const FiltersScreen = (props) => {
   // we are using destructuring so the the useEffect does rerun whenever props changes.. only when navigation changes
   const { navigation } = props;
 
-  const [isGlutenFree, setIsGlutenFree] = useState(false);
-  const [isLactoseFree, setIsLactoseFree] = useState(false);
-  const [isVegetarian, setIsVegetarian] = useState(false);
-  const [isVegan, setIsVegan] = useState(false);
+  const [isCreature, setIsCreature] = useState(false);
+  const [isSorcery, setIsSorcery] = useState(false);
+  const [isInstant, setIsInstant] = useState(false);
+  const [isArtifact, setIsArtifact] = useState(false);
 
-  const dispatch = useDispatch()
+  const dispatch = useDispatch();
   // we use useCallback because this info is now cached by react and only updated if its dependencies change
   //
   const saveFilters = useCallback(() => {
     const appliedFilters = {
-      glutenFree: isGlutenFree,
-      lactoseFree: isLactoseFree,
-      vegan: isVegan,
-      vegetarian: isVegetarian,
+      creature: isCreature,
+      sorcery: isSorcery,
+      instant: isInstant,
+      artifact: isArtifact,
     };
-    dispatch(setFilters(appliedFilters))
+    dispatch(setFilters(appliedFilters));
     // we will re create this function only if one of these dependencies is updated
     // this is import becuase saveFilters is a dependency in useEffect and we want to keep the rerendering to a minimum
-  }, [isGlutenFree, isLactoseFree, isVegan, isVegetarian, dispatch]);
+  }, [isCreature, isSorcery, isInstant, isArtifact, dispatch]);
 
   useEffect(() => {
     // setParams updates the params values of the currently loaded screen
@@ -60,24 +60,24 @@ const FiltersScreen = (props) => {
     <View style={styles.screen}>
       <Text style={styles.title}>Available FIlters / Restrictions</Text>
       <FilterSwtich
-        label="Gluten-Free"
-        state={isGlutenFree}
-        onChange={(newValue) => setIsGlutenFree(newValue)}
+        label="Creature"
+        state={isCreature}
+        onChange={(newValue) => setIsCreature(newValue)}
       />
       <FilterSwtich
-        label="Lactose-Free"
-        state={isLactoseFree}
-        onChange={(newValue) => setIsLactoseFree(newValue)}
+        label="Sorcery"
+        state={isSorcery}
+        onChange={(newValue) => setIsSorcery(newValue)}
       />
       <FilterSwtich
-        label="Vegan"
-        state={isVegan}
-        onChange={(newValue) => setIsVegan(newValue)}
+        label="Instant"
+        state={isInstant}
+        onChange={(newValue) => setIsInstant(newValue)}
       />
       <FilterSwtich
-        label="Vegetarian"
-        state={isVegetarian}
-        onChange={(newValue) => setIsVegetarian(newValue)}
+        label="Artifact"
+        state={isArtifact}
+        onChange={(newValue) => setIsArtifact(newValue)}
       />
     </View>
   );
@@ -85,7 +85,7 @@ const FiltersScreen = (props) => {
 
 FiltersScreen.navigationOptions = (navData) => {
   return {
-    headerTitle: "Filter Meals",
+    headerTitle: "Filter Cards",
     headerLeft: () => (
       <HeaderButtons HeaderButtonComponent={HeaderButton}>
         <Item

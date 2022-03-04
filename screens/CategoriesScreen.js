@@ -1,9 +1,5 @@
 import React from "react";
-import {
- 
-  FlatList,
-  StyleSheet,
-} from "react-native";
+import { FlatList, StyleSheet } from "react-native";
 import { CATEGORIES } from "../data/dummy-data";
 import CategoryGridTile from "../components/CategoryGridTile";
 import { HeaderButtons, Item } from "react-navigation-header-buttons";
@@ -17,7 +13,7 @@ const CategoriesScreen = (props) => {
         title={itemData.item.title}
         onSelect={() => {
           props.navigation.navigate({
-            routeName: "CategoryMeals",
+            routeName: "CategoryCards",
             params: {
               categoryId: itemData.item.id,
             },
@@ -38,18 +34,21 @@ const CategoriesScreen = (props) => {
   );
 };
 
-CategoriesScreen.navigationOptions = navData => {
-    return {
-        headerTitle: "Meal Categories",
-        headerLeft: () => (
-          <HeaderButtons HeaderButtonComponent={HeaderButton}>
-            <Item title="Menu" iconName="ios-menu" onPress={() => {
-                navData.navigation.toggleDrawer()
-            }} />
-          </HeaderButtons>
-        ),
-    }
-  
+CategoriesScreen.navigationOptions = (navData) => {
+  return {
+    headerTitle: "Card Type Categories",
+    headerLeft: () => (
+      <HeaderButtons HeaderButtonComponent={HeaderButton}>
+        <Item
+          title="Menu"
+          iconName="ios-menu"
+          onPress={() => {
+            navData.navigation.toggleDrawer();
+          }}
+        />
+      </HeaderButtons>
+    ),
+  };
 };
 
 const styles = StyleSheet.create({
