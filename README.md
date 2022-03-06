@@ -13,6 +13,9 @@ Using navigation in React Native, as well incorporating Redux into the mix, can 
 In the near future,  I will be recording more in depth videos in which I dive into the code and touch specifically on those two points. 
 As I keep learning React Native I’m hoping to add a user login, deploy the app, and connect to a backend database in the future. 
 
+## Video Walkthrough
+
+
 
 ### Home Screen and Filter Screen
 <img width="777" alt="Screen Shot 2022-03-05 at 12 04 34 PM" src="https://user-images.githubusercontent.com/88294702/156892998-bfb8b173-d579-4293-92d3-499d4c3e443b.png">
